@@ -1,0 +1,47 @@
+application:
+  appName: "cmdb"
+  description: "微服务资产管理平台"
+  domain: "example.com"
+
+log:
+  otlp: false
+
+http:
+  enabled: true
+  host: "0.0.0.0"
+  port: 8083
+  otlp: false
+
+grpc:
+  enabled: true
+  host: "0.0.0.0"
+  port: 18083
+
+otlp:
+  httpEndpoint: "10.54.44.78:4318"
+  grpcEndpoint: "10.54.44.78:4317"
+  enableTLS: false
+
+kafka:
+  username: "adminscram"
+  password: "admin-secret-512"
+  brokers: ["127.0.0.1:9093"]
+  async: true
+  batchTimeout: 10
+
+mauditProducer:
+  topic: "maudit"
+
+mcenterClient:
+  host: "127.0.0.1"
+  port: 18082
+  token: "mcenter-token"
+
+datasource:
+  otlp: true
+  host: "127.0.0.1"
+  port: 3306
+  database: "CloudManager"
+  username: "root"
+  password: "redhat"
+  debug: true
