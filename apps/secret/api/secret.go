@@ -7,4 +7,5 @@ import (
 
 func (h *Handler) Test(r *restful.Request, w *restful.Response) {
 	utils.SendSuccess(w, "ok")
+	h.log.Info("test")
 }
