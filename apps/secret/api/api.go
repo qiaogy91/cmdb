@@ -31,8 +31,10 @@ func (h *Handler) Registry() {
 		Metadata(restfulspec.KeyOpenAPITags, tag).
 		Metadata("auth", true).
 		Metadata("audit", true).
+		Metadata("perm", true).
 		Metadata("resource", secret.AppName).
-		Metadata("action", "get"),
+		Metadata("action", "get").
+		Metadata("doc", "测试接口"),
 	)
 }
 
