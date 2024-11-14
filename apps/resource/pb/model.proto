@@ -43,18 +43,21 @@ message Spec {
     // --------------------------------------------- 通用属性 ---------------------------------------------
     Vendor vendor = 1;
     Type type = 2;
-    string name = 3;
-    string secret_id = 4;
+    // @gotags: gorm:"unique"
+    string resource_id = 3;
+    string name = 4;
     string region = 5;
     string zone = 6;
-    string status = 9;
+    string status = 7;
     // --------------------------------------------- 运维属性 ---------------------------------------------
-    repeated string private_address = 10;
-    repeated string public_address = 11;
-    int32 cpu = 12;
-    int64 memory = 13;
-    int64 storage = 14;
+    // @gotags: gorm:"json"
+    repeated string private_address = 8;
+    // @gotags: gorm:"json"
+    repeated string public_address = 9;
+    int32 cpu = 10;
+    int64 memory = 11;
+    int64 storage = 12;
     // --------------------------------------------- 其他属性 ---------------------------------------------
-    // @gotags: json:"extra" gorm:"json"
-    map<string, string> extra = 15;
+    // @gotags: gorm:"json"
+    map<string, string> extra = 13;
 }

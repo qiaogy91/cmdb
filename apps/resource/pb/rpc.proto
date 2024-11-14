@@ -9,7 +9,13 @@ option go_package = "github.com/qiaogy91/cmdb/apps/resource";
 
 service Rpc {
     rpc CreateResource (Spec) returns (Resource);
+    rpc DescResource(DescResourceRequest)returns (Resource);
     rpc QueryResource (QueryResourceRequest) returns (ResourceSet);
+}
+
+message DescResourceRequest {
+    // @gotags: validate:"required"
+    string resource_id = 1;
 }
 
 enum QueryType {

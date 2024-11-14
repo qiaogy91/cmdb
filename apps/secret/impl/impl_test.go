@@ -65,7 +65,7 @@ func TestImpl_DescSecret(t *testing.T) {
 func TestImpl_SyncResource(t *testing.T) {
 	req := &secret.SyncResourceRequest{
 		Vendor:         secret.Vendor_VENDOR_ALI,
-		Id:             3,
+		SecretId:       3,
 		AccessEndpoint: "ecs.cn-hangzhou.aliyuncs.com",
 		RegionId:       "cn-hangzhou",
 	}

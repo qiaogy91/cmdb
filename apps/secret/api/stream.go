@@ -1,20 +1,20 @@
-package impl_test
+package api
 
 import (
-	"fmt"
+	"github.com/gorilla/websocket"
 	"github.com/qiaogy91/cmdb/apps/resource"
 	"google.golang.org/grpc"
 )
 
 type Stream struct {
 	grpc.ServerStream
+	conn *websocket.Conn
 }
 
 func (s *Stream) Send(rsp *resource.Resource) error {
-	fmt.Printf("@@@stream response: %+v\n", rsp)
-	return nil
+	return s.conn.WriteJSON(rsp)
 }
 
-func NewStream() *Stream {
-	return &Stream{}
+func NewStream(c *websocket.Conn) *Stream {
+	return &Stream{conn: c}
 }

@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	Rpc_CreateResource_FullMethodName = "/cmdb.resource.Rpc/CreateResource"
+	Rpc_DescResource_FullMethodName   = "/cmdb.resource.Rpc/DescResource"
 	Rpc_QueryResource_FullMethodName  = "/cmdb.resource.Rpc/QueryResource"
 )
 
@@ -28,6 +29,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RpcClient interface {
 	CreateResource(ctx context.Context, in *Spec, opts ...grpc.CallOption) (*Resource, error)
+	DescResource(ctx context.Context, in *DescResourceRequest, opts ...grpc.CallOption) (*Resource, error)
 	QueryResource(ctx context.Context, in *QueryResourceRequest, opts ...grpc.CallOption) (*ResourceSet, error)
 }
 
@@ -48,6 +50,15 @@ func (c *rpcClient) CreateResource(ctx context.Context, in *Spec, opts ...grpc.C
 	return out, nil
 }
 
+func (c *rpcClient) DescResource(ctx context.Context, in *DescResourceRequest, opts ...grpc.CallOption) (*Resource, error) {
+	out := new(Resource)
+	err := c.cc.Invoke(ctx, Rpc_DescResource_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *rpcClient) QueryResource(ctx context.Context, in *QueryResourceRequest, opts ...grpc.CallOption) (*ResourceSet, error) {
 	out := new(ResourceSet)
 	err := c.cc.Invoke(ctx, Rpc_QueryResource_FullMethodName, in, out, opts...)
@@ -62,6 +73,7 @@ func (c *rpcClient) QueryResource(ctx context.Context, in *QueryResourceRequest,
 // for forward compatibility
 type RpcServer interface {
 	CreateResource(context.Context, *Spec) (*Resource, error)
+	DescResource(context.Context, *DescResourceRequest) (*Resource, error)
 	QueryResource(context.Context, *QueryResourceRequest) (*ResourceSet, error)
 	mustEmbedUnimplementedRpcServer()
 }
@@ -72,6 +84,9 @@ type UnimplementedRpcServer struct {
 
 func (UnimplementedRpcServer) CreateResource(context.Context, *Spec) (*Resource, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateResource not implemented")
+}
+func (UnimplementedRpcServer) DescResource(context.Context, *DescResourceRequest) (*Resource, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DescResource not implemented")
 }
 func (UnimplementedRpcServer) QueryResource(context.Context, *QueryResourceRequest) (*ResourceSet, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method QueryResource not implemented")
@@ -107,6 +122,24 @@ func _Rpc_CreateResource_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Rpc_DescResource_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DescResourceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RpcServer).DescResource(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Rpc_DescResource_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RpcServer).DescResource(ctx, req.(*DescResourceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Rpc_QueryResource_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(QueryResourceRequest)
 	if err := dec(in); err != nil {
@@ -135,6 +168,10 @@ var Rpc_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateResource",
 			Handler:    _Rpc_CreateResource_Handler,
+		},
+		{
+			MethodName: "DescResource",
+			Handler:    _Rpc_DescResource_Handler,
 		},
 		{
 			MethodName: "QueryResource",

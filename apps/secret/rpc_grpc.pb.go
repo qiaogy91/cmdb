@@ -8,6 +8,7 @@ package secret
 
 import (
 	context "context"
+	resource "github.com/qiaogy91/cmdb/apps/resource"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -97,7 +98,7 @@ func (c *rpcClient) SyncResource(ctx context.Context, in *SyncResourceRequest, o
 }
 
 type Rpc_SyncResourceClient interface {
-	Recv() (*SyncResourceResponse, error)
+	Recv() (*resource.Resource, error)
 	grpc.ClientStream
 }
 
@@ -105,8 +106,8 @@ type rpcSyncResourceClient struct {
 	grpc.ClientStream
 }
 
-func (x *rpcSyncResourceClient) Recv() (*SyncResourceResponse, error) {
-	m := new(SyncResourceResponse)
+func (x *rpcSyncResourceClient) Recv() (*resource.Resource, error) {
+	m := new(resource.Resource)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -238,7 +239,7 @@ func _Rpc_SyncResource_Handler(srv interface{}, stream grpc.ServerStream) error 
 }
 
 type Rpc_SyncResourceServer interface {
-	Send(*SyncResourceResponse) error
+	Send(*resource.Resource) error
 	grpc.ServerStream
 }
 
@@ -246,7 +247,7 @@ type rpcSyncResourceServer struct {
 	grpc.ServerStream
 }
 
-func (x *rpcSyncResourceServer) Send(m *SyncResourceResponse) error {
+func (x *rpcSyncResourceServer) Send(m *resource.Resource) error {
 	return x.ServerStream.SendMsg(m)
 }
 
