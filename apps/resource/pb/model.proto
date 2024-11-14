@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package cmdb.resource;
+
+option go_package = "github.com/qiaogy91/cmdb/apps/resource";
+
+
+message ResourceSet {
+    int64 total = 1;
+    repeated Resource items = 2;
+}
+
+message Resource {
+    // @gotags: gorm:"embedded"
+    Meta meta = 1;
+    // @gotags: gorm:"embedded"
+    Spec spec = 2;
+}
+
+
+message Meta {
+    // @gotags: json:"created_at" gorm:"primaryKey"
+    int64 id = 1;
+    // @gotags: json:"created_at" gorm:"autoCreateTime"
+    int64 created_at = 2;
+    // @gotags: json:"updated_at" gorm:"autoUpdateTime"
+    int64 updated_at = 3;
+}
+
+enum Vendor {
+    VENDOR_UNSPECIFIED = 0;
+    VENDOR_ALI = 1;
+    VENDOR_TENCENT = 2;
+}
+
+// Type 资源类型
+enum Type {
+    TYPE_UNSPECIFIED = 0;
+    TYPE_ECS = 1;
+    TYPE_RDS = 2;
+}
+message Spec {
+    // --------------------------------------------- 通用属性 ---------------------------------------------
+    Vendor vendor = 1;
+    Type type = 2;
+    string name = 3;
+    string secret_id = 4;
+    string region = 5;
+    string zone = 6;
+    string status = 9;
+    // --------------------------------------------- 运维属性 ---------------------------------------------
+    repeated string private_address = 10;
+    repeated string public_address = 11;
+    int32 cpu = 12;
+    int64 memory = 13;
+    int64 storage = 14;
+    // --------------------------------------------- 其他属性 ---------------------------------------------
+    // @gotags: json:"extra" gorm:"json"
+    map<string, string> extra = 15;
+}

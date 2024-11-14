@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package cmdb.resource;
+
+import "apps/resource/pb/model.proto";
+
+option go_package = "github.com/qiaogy91/cmdb/apps/resource";
+
+
+service Rpc {
+    rpc CreateResource (Spec) returns (Resource);
+    rpc QueryResource (QueryResourceRequest) returns (ResourceSet);
+}
+
+enum QueryType {
+    QUERY_TYPE_UNSPECIFIED = 0;
+    QUERY_TYPE_VENDOR = 1;
+}
+message QueryResourceRequest {
+    // @gotags: validate:"required"
+    int64 page_num = 1;
+    // @gotags: validate:"required"
+    int64 page_size = 2;
+    Type type = 3;
+    string keyword = 4;
+}

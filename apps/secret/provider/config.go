@@ -6,5 +6,4 @@ type Conf struct {
 }
 
 type Ali struct{}
-
 type Tencent struct{}

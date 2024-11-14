@@ -1,7 +1,6 @@
 package provider
 
 import (
-	"fmt"
 	"github.com/qiaogy91/cmdb/apps/secret"
 	"github.com/qiaogy91/ioc/config/log"
 	"log/slog"
@@ -18,15 +17,10 @@ type Provider interface {
 }
 
 var (
+	//containerLogger =
 	container   = map[secret.Vendor]Provider{}
 	AddProvider = func(o Provider) { container[o.Type()] = o }
-	GetProvider = func(t secret.Vendor) Provider {
-		o, ok := container[t]
-		if !ok {
-			panic(fmt.Errorf("get provider err because provider %v not added", t))
-		}
-		return o
-	}
+	GetProvider = func(t secret.Vendor) Provider { return container[t] }
 
 	InitProvider = func(conf Conf) {
 		l := log.Sub(AppName)

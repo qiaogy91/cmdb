@@ -2,8 +2,10 @@ package impl
 
 import (
 	"context"
+	"fmt"
 	"github.com/go-playground/validator/v10"
 	"github.com/qiaogy91/cmdb/apps/secret"
+	"github.com/qiaogy91/cmdb/apps/secret/provider"
 )
 
 func (i *Impl) CreateTable(ctx context.Context) error {
@@ -75,7 +77,15 @@ func (i *Impl) DescSecret(ctx context.Context, req *secret.DescSecretRequest) (*
 	return ins, nil
 }
 
-func (i *Impl) SyncResource(request *secret.SyncResourceRequest, server secret.Rpc_SyncResourceServer) error {
-	//TODO implement me
-	panic("implement me")
+func (i *Impl) SyncResource(req *secret.SyncResourceRequest, stream secret.Rpc_SyncResourceServer) error {
+	if err := validator.New().Struct(req); err != nil {
+		return err
+	}
+
+	ins := provider.GetProvider(req.Vendor)
+	if ins == nil {
+		return fmt.Errorf("no such provider, because provider not added")
+	}
+
+	return ins.SyncResource(req, stream)
 }
